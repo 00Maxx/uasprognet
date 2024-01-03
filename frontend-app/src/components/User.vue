@@ -1,33 +1,18 @@
 <template>
     <div class="container">
-        <h2>Form Vue</h2>
+        <h2>Form User</h2>
         <form @submit.prevent="simpan()">
             <div class="mb-3 form-group">
-                <label>Nama</label>
-                <input type="text" class="form-control" v-model="nasabah.nama">
+                <label>Name</label>
+                <input type="text" class="form-control" v-model="user.name">
             </div>
             <div class="mb-3 form-group">
-                <label>Alamat</label>
-                <input type="text" class="form-control" v-model="nasabah.alamat">
+                <label>Email</label>
+                <input type="text" class="form-control" v-model="user.email">
             </div>
             <div class="mb-3 form-group">
-                <label>Telepon</label>
-                <input type="text" class="form-control" v-model="nasabah.telepon">
-            </div>
-            <div class="mb-3 form-group">
-                <label>Tanggal Lahir</label>
-                <input type="text" class="form-control" v-model="nasabah.lahir">
-            </div>
-            <div class="mb-3 form-group">
-                <label>Gender</label>
-                <select v-model="nasabah.gender" class="form-control">
-                <option value="Pria">Pria</option>
-                <option value="Wanita">Wanita</option>
-                </select>
-            </div>
-            <div class="mb-3 form-group">
-                <label>Agama Id</label>
-                <input type="text" class="form-control" v-model="nasabah.agama_id">
+                <label>Password</label>
+                <input type="text" class="form-control" v-model="user.password">
             </div>
             <div class="btn-group">
                 <button class="btn btn-primary" type="submit">Simpan</button>
@@ -35,33 +20,28 @@
             </div>
         </form>
         
-        <h2>Data Nasabah</h2>
+        <h2>Data User</h2>
         <table class="table table-striped">
             <thead>
                 <tr>
                     <td>ID</td>
-                    <td>Nama</td>
-                    <td>Alamat</td>
-                    <td>Telepon</td>
-                    <td>Tanggal Lahir</td>
-                    <td>Gender</td>
-                    <td>Agama_ID</td>
+                    <td>Name</td>
+                    <td>Email</td>
+                    
                     <td>Action</td>
                 </tr>
             </thead>
             <tbody>
-                <tr v-for="(nasabah, index) in allNasabah" :key="nasabah.id">
-                    <td>{{ nasabah.id }}</td>
-                    <td>{{ nasabah.nama }}</td>
-                    <td>{{ nasabah.alamat}}</td>
-                    <td>{{ nasabah.telepon }}</td>
-                    <td>{{ nasabah.lahir }}</td>
-                    <td>{{ nasabah.gender }}</td>
-                    <td>{{ nasabah.agama_id }}</td>
+                <tr v-for="(user, index) in allUser" :key="user.id">
+                    <td>{{ user.id }}</td>
+                    <td>{{ user.name }}</td>
+                    <td>{{ user.email}}</td>
+                    <td>{{ user.password}}</td>
+                    
                     <td>
                         <div class="btn-group">
-                            <button type="button" class="btn btn-warning" @click="edit(nasabah)">Edit</button>
-                            <button type="button" class="btn btn-danger" @click="remove(nasabah)">Delete</button>
+                            <button type="button" class="btn btn-warning" @click="edit(user)">Edit</button>
+                            <button type="button" class="btn btn-danger" @click="remove(user)">Delete</button>
                         </div>
                     </td>
                 </tr>
@@ -74,87 +54,81 @@
     import axios from 'redaxios';
 
     export default {
-        name : 'nasabah',
+        name : 'user',
         data() {
             return {
-                allNasabah : {},
-                nasabah:{
+                allUser : {},
+                user:{
                     'id':'',
-                    'nama':'',
-                    'alamat':'',
-                    'telepon':'',
-                    'lahir':'',
-                    'gender':'',
-                    'agama_id':'',
-
+                    'name':'',
+                    'email':'',
+                    'password':'',
                 }
             }
         },
         created() {
             console.log('Created !');
-            this.loadAllNasabah();
+            this.loadAllUser();
         },
         mounted() {
             console.log('Mounted');
         },
         methods: {
-            loadAllNasabah(){
-                var url = `https://api-group12-prognet.manpits.xyz/api/nasabah/`;
+            loadAllUser(){
+                var url = `https://api-group12-prognet.manpits.xyz/api/user/`;
                 axios.get(url).then(
                     ({data})=>{
                         console.log(data);
-                        this.allNasabah = data;
+                        this.allUser = data;
                     }
                 );                
             },
-            remove(nasabah){
-                var url = `https://api-group12-prognet.manpits.xyz/api/nasabah/${nasabah.id}`;
+            remove(user){
+                var url = `https://api-group12-prognet.manpits.xyz/api/user/${user.id}`;
                 axios.delete(url).then(
                     ()=>{
                     console.log('Berhasil dihapus!');
-                    this.loadAllNasabah();
+                    this.loadAllUser();
                     }
                 );
             },
-            edit(nasabah){
-                var url = `https://api-group12-prognet.manpits.xyz/api/nasabah/${nasabah.id}`;
+            edit(user){
+                var url = `https://api-group12-prognet.manpits.xyz/api/user/${user.id}`;
                 axios.get(url).then(
                     ({data})=>{
-                        this.nasabah = data;
-                        console.log(this.nasabah);
+                        this.user = data;
+                        console.log(this.user);
                     }
                 );
             },
             simpan(){
-                if(this.nasabah.id==''){
+                if(this.user.id==''){
                     // simpan baru
-                    var url = `https://api-group12-prognet.manpits.xyz/api/nasabah`;
-                    axios.post(url,this.nasabah).then(
+                    var url = `https://api-group12-prognet.manpits.xyz/api/user`;
+                    axios.post(url,this.user).then(
                         ()=>{
                             console.log('berhasil di simpan');
-                            this.loadAllNasabah();
+                            this.loadAllUser();
                             this.clear();
                         }
                     );
                 }else{
-                    var url = `https://api-group12-prognet.manpits.xyz/api/nasabah/${this.nasabah.id}`;
-                    axios.put(url,this.nasabah).then(
+                    var url = `https://api-group12-prognet.manpits.xyz/api/user/${this.user.id}`;
+                    axios.put(url,this.user).then(
                         ()=>{
                             console.log('Berhasil Di Edit');
-                            this.loadAllNasabah();
+                            this.loadAllUser();
                             this.clear();
                         }
                     );
                 }
             },
             clear(){
-                this.nasabah.id='';
-                this.nasabah.nama='';
-                this.nasabah.alamat='';
-                this.nasabah.telepon='';
-                this.nasabah.lahir='';
-                this.nasabah.gender='';
-                this.nasabah.agama_id='';
+                this.user.id='';
+                this.user.name='';
+                this.user.email='';
+                this.user.password='';
+                
             }
         }
     }
