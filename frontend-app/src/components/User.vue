@@ -1,6 +1,6 @@
 <template>
     <div class="container">
-        <h2>Form Nasabah</h2>
+        <h2>Form Vue</h2>
         <form @submit.prevent="simpan()">
             <div class="mb-3 form-group">
                 <label>Nama</label>
